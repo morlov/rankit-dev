@@ -1,0 +1,28 @@
+{% macro render_ranking(ranking) %}
+
+<table class="table table-hover">
+
+	<thead class="ranking-header">
+		<td>
+			<a href = "/ranking/{{ranking.get_id()}}">
+				{{ranking.title}}
+			</a>
+		</td>
+	</thead>
+	
+	<tbody>
+		{% for item in ranking.get_items() %}
+		<tr">
+			<td>
+				<span class="item-rank">{{loop.index}}</span>
+				<span class="item-name">{{item.name}}</span>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	<tfoot class="ranking-footer">
+	</tfoot>
+	
+</table>
+
+{% endmacro %}

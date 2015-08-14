@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "render.html" import render_ranking %}
+
+{% block title %} Rankit | {{user.name}} {% endblock title %}
+
+{% block content %}
+
+<div class= "col-md-7 col-centered">
+
+	{% block dashboard %}
+	
+	{% for ranking in rankings %}
+		<div class="row">
+		
+			<div class="col-md-2">
+				<a href='/user/{{ranking.user.name}}'> <img src="../img/noavatar.jpeg"></a>
+			</div>
+			<div class="col-md-4">
+				<a href='/user/{{ranking.user.name}}'>{{ranking.user.name}}</a> 
+				{{ranking.created.strftime("%b %d, %Y")}}
+			</div>
+			<div class="col-md-7">
+				{{ render_ranking(ranking) }}
+			</div>
+			
+		</div>
+	{% endfor %}
+
+	{% endblock dashboard %}
+</div>
+
+{% endblock content %}

@@ -1,0 +1,44 @@
+{% extends "ranking_page.html" %}
+
+{% block title %} Rankit | Ranking {% endblock title %}
+
+{% block ranking %}
+
+	<div class="ranking">
+	<div class="ranking-header">
+		<span class="ranking-title">
+			<a href = "/ranking/{{ranking.get_id()}}" class="ranking-ref">
+				{{ranking.title}}
+			</a>
+		</span>
+	</div>
+
+	<div class = "ranking-content">
+		{% for item in ranking.get_items() %}
+		<div class="item" data-item-id="{{item.get_id()}}">
+			<div class="ranking-item">
+				<span class="item-rank">{{loop.index}}</span>
+				<span class="item-name">{{item.name}}</span>
+				<button class="ranking-button open">show</button>
+			</div>
+			<div class="item-content">
+				<span class="item-name">{{item.content}}</span>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+
+	<div class="ranking-footer">
+		{% if is_sorted %}
+			<input id="sort-ranking" disabled class="ranking-button" type="button" value="Sorted">
+		{% else %}
+			<input id="sort-ranking" class="ranking-button" type="button" value="Sort">
+			<form id="post-ranking" method="post">
+				<input type="hidden" value="" name="ranking">
+				<input id="submit-ranking" class="ranking-button post" type="submit" value="Post" style="display: none">
+			</form>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock ranking %}
