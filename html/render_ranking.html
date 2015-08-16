@@ -1,0 +1,75 @@
+{% macro render_ranking_short(ranking) %}
+
+<table class="table table-hover table-bordered ranking">
+	<thead class="ranking-header">
+		<a href='/user/{{ranking.user.name}}'>{{ranking.user.name}}</a>
+		<p> {{ranking.created.strftime("%b %d, %Y")}} </p>
+		<td colspan="2">
+			<a href = "/ranking/{{ranking.get_id()}}"> {{ranking.title}} </a>
+		</td>
+	</thead>
+	
+	<tbody class="ranking-body">
+		{% for item in ranking.get_items() %}
+		<tr class="ranking-item">
+			<tr class="item">
+				<td class="item-rank">{{loop.index}}</td>
+				<td class="item-name">{{item.name}}</td>
+			</tr>
+		</tr>
+		{% endfor %}
+	</tbody>
+	
+	<tfoot class="ranking-footer"> 
+		<td colspan="2">
+			<span class="glyphicon glyphicon-thumbs-up">0</span>
+			<span class="glyphicon glyphicon-user">1</span>
+		</td>
+	</tfoot>
+</table>
+
+{% endmacro %}
+
+{% macro render_ranking_full(ranking, is_sorted) %}
+
+<table class="table table-hover table-bordered ranking">
+
+	<thead>
+		<a href='/user/{{ranking.user.name}}'>{{ranking.user.name}}</a>
+		<p> {{ranking.created.strftime("%b %d, %Y")}} </p>
+		<th colspan="2"> {{ranking.title}} </th>
+	</thead>
+	
+	<tbody class="ranking-body">
+		{% for item in ranking.get_items() %}
+		<tr class="ranking-item">
+			<td class="item-rank"> {{loop.index}} </td>
+			<td> 
+				<span class="item-name"> {{item.name}} <span>
+				<span class="glyphicon glyphicon-chevron-down open"></span> 
+			</td>
+		</tr>
+		<tr class="item-content">
+			<td colspan="2"> {{item.content}} </td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	
+	<tfoot class="ranking-footer">
+		<td colspan="2">
+		{% if is_sorted %}
+			<input id="sort-ranking" disabled class="btn btn-default btn-sm ranking-button" type="button" value="Sorted">
+		{% else %}
+			<input id="sort-ranking" class="btn btn-primary btn-sm ranking-button" type="button" value="Sort">
+			<form id="post-ranking" method="post">
+				<input type="hidden" value="" name="ranking">
+				<input id="submit-ranking" class="btn btn-sm ranking-button post" type="submit" value="Post" style="display: none">
+			</form>
+		{% endif %}
+		</td>
+	</tfoot>
+</div>
+	
+</table>
+
+{% endmacro %}

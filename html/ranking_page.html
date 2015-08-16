@@ -2,12 +2,12 @@
 
 {% block content %}
 
-<div id="new-ranking">
-	{% block ranking %} {% endblock ranking %}
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		{% block ranking %} {% endblock ranking %}
+	</div>
 </div>
 
-<div class="comment">
 {% block comment %} {% endblock comment %}
-</div>
 
 {% endblock content %}

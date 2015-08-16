@@ -16,6 +16,6 @@ class NewRanking(handler.Handler):
     def post(self):
         user = self.get_current_user()
         ranking_form = RankingForm(self.request.get('ranking')) 
-        Ranking.create(user, ranking_form)
+        ranking = Ranking.create(user, ranking_form)
         time.sleep(0.2)
-        self.redirect('/')
+        self.redirect("/ranking/" + str(ranking.get_id()))

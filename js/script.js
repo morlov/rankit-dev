@@ -1,75 +1,65 @@
 $(document).ready(function()
 {	
-
+	// Sorting
+	
 	$(function() {
-		$(".ranking-content").sortable({revert: 200, 
+		$(".ranking-body").sortable({revert: 200, 
 			update: function(event, ui) {
 	        	var i = 1
-	        	$(this).children().each(function(idx, val){
+	        	$(this).children(".ranking-item").each(function(idx, val){
 					$(this).find(".item-rank").html(i++);
 	            });	
 			}
 			});
-		$(".ranking-content").sortable("disable");
-		$(".ranking-content").disableSelection();
+		$(".ranking-body").sortable("disable");
+		$(".ranking-body").disableSelection();
 	});
 
-	var cached_ranking_content = $(".ranking-content").html();
+	var cached_ranking_content = $(".ranking-body").html();
 
 	$("#sort-ranking").click(function(){
 		if($(this).val() === "Cancel") {
-		  	$(".ranking-content").sortable("disable");
+		  	$(".ranking-body").sortable("disable");
 		  	$(this).val("Sort");
-    		$(".ranking-content").html(cached_ranking_content).sortable("refresh");
+    		$(".ranking-body").html(cached_ranking_content).sortable("refresh");
 		}
 		else {
-		 	$(".ranking-content").sortable("enable");
+		 	$(".ranking-body").sortable("enable");
 		  	$(this).val("Cancel");
 		};
 		$("#submit-ranking").toggle("slow", function(){});
 	});
-
+	
+	// New ranking
 	var i = 1;
 	$("#add-item").on('click', function(){
-		$(".ranking-content").sortable("enable");
-		var item_name = $("#item-text").val();
-		var item_content = $("#item-content").val();;
+		$(".ranking-body").sortable("enable");
+		var item_name = $("#item-name").val();
+		var item_content = $("#item-content").val();
 		if(item_name != '') {
 		 	var new_item =
-		 		'<div class="item">' +
-		 			'<div class="ranking-item" data-item-id=""> ' + 
-		 				'<span class="item-rank">' + (i++) +'</span>' +
-						'<span class="item-name">' + item_name + '</span> ' +
-		 				'<button class="ranking-button open">show</button>' +
-		 			'</div>' +
-		 			'<div class="item-content">' +
-		 				'<span class="item-body">' + item_content + '</span> ' +
-		 			'</div> ' +
-		 		'</div> ';
-			$(new_item).appendTo($(".ranking-content"));
-			$("#item-text").val("");
+		 		'<tr class="ranking-item">' +
+		 			'<td class="item-rank">' + (i++) +'</td>' +
+		 			'<td>' +
+		 				'<span class="item-name">' + item_name + '</span>' +
+		 				'<span class="glyphicon glyphicon-chevron-down open"></span>' +
+					'</td>' +
+		 		'</tr>' +
+		 		'<tr class="item-content">' +
+		 			'<td colspan="2">' + item_content + '</td>' +
+		 		'</tr>';
+			$(new_item).appendTo($(".ranking-body"));
+			$("#item-name").val("");
 			$("#item-content").val("");
 		}      
-	});
-	
-	$("#post-ranking").submit(function(event) {
-		var ranking = {
-		item_ids: [],
-		};
-		$(".ranking-content").children().each(function(idx, val){
-			ranking.item_ids.push($(this).data("item-id"));
-        });	
-		$("input[name='ranking']").val(JSON.stringify(ranking));
-		$("#submit-ranking").attr("disabled","disabled");
 	});
 
 	$("#post-new-ranking").on('submit', function(event) {
 		
 		var ranking = {
-		
-		title: $("#ranking-title-input").val(),
-		item_names: [],
-		item_contents: []
+			title: $("#ranking-title-input").val(),
+			item_names: [],
+			item_contents: []
 		};
 
 		if(ranking.title === '') { 
@@ -77,9 +67,12 @@ $(document).ready(function()
 			return false; 
 		}
 		
-		$(".ranking-content").children().each(function(idx, val){
+		$(".ranking-body").children(".ranking-item").each(function(idx, val){
 			ranking.item_names.push($(this).find(".item-name").text());
-			ranking.item_contents.push($(this).find(".item-content").text());
+        });
+		
+		$(".ranking-body").children(".item-content").each(function(idx, val){
+			ranking.item_contents.push($(this).text());
         });
 
 		if(ranking.item_names.length < 2) { 
@@ -89,28 +82,43 @@ $(document).ready(function()
 		$("input[name='ranking']").val(JSON.stringify(ranking));
 		$("#submit-ranking").attr("disabled","disabled");
 	});
+	
+	// Update and post
+	
+	$("#post-ranking").submit(function(event) {
+		var ranking = {
+		item_ids: [],
+		};
+		$(".ranking-body").children().each(function(idx, val){
+			ranking.item_ids.push($(this).data("item-id"));
+        });	
+		$("input[name='ranking']").val(JSON.stringify(ranking));
+		$("#submit-ranking").attr("disabled","disabled");
+	});
 
-	$(".ranking-content").on('click', ".ranking-button.open", 
+	//	Ranking displaying content
+	
+	$(".ranking-body").on('click', ".open", 
 		function() {
-			$(this).closest(".item").find(".item-content").slideToggle();
-			if($(this).html()==="show") {
-				$(this).html("hide");
+			$(this).closest(".ranking-item").next().slideToggle();
+			if($(this).val()==="show") {
+				$(this).val("hide");
+				$(this).attr("class", "glyphicon glyphicon-chevron-down open");
 			}
-		else {
-			$(this).html("show");
-		}
+			else {
+				$(this).val("show");
+				$(this).attr("class", "glyphicon glyphicon-chevron-up open");
+			}
 	});
 
-	$(".ranking-content").on('mouseenter', ".ranking-item",
+	$(".ranking-body").on('mouseenter', ".ranking-item",
 		function() {
-		$(this).css('background-color','#edf3f8');
-		$(this).find(".ranking-button.open").show();
+		$(this).find(".open").show();
 	});
 
-	$(".ranking-content").on('mouseleave', ".ranking-item",
+	$(".ranking-body").on('mouseleave', ".ranking-item",
 	 	function() { 
-	 	$(this).css('background-color','#fff');
-	 	$(this).find(".ranking-button.open").hide();
+	 	$(this).find(".open").hide();
 	});
 
 });

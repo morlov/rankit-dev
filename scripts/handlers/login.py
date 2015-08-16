@@ -1,4 +1,5 @@
 import re
+import time
 from scripts.handlers import handler
 
 from scripts.models.user import User
@@ -19,7 +20,7 @@ def valid_signup(self, email, password, verify, user_name):
     if not valid_email(email):
         return "That's not a valid email."
     if not valid_password(password):
-        return "That's a valid password."
+        return "That's nat a valid password."
     if password != verify:
         return "Your passwords didn't match."
     if not valid_user_name(user_name):
@@ -52,6 +53,7 @@ class Signup(handler.Handler):
             user = User(name=user_name, password=password, email=email)
             user.put()
             self.set_current_user(user)
+            time.sleep(0.2)
             self.redirect('/')
 
 class Signin(handler.Handler):
