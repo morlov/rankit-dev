@@ -1,75 +1,78 @@
 {% macro render_ranking_short(ranking) %}
-
-<table class="table table-hover table-bordered ranking">
-	<thead class="ranking-header">
-		<a href='/user/{{ranking.user.name}}'>{{ranking.user.name}}</a>
-		<p> {{ranking.created.strftime("%b %d, %Y")}} </p>
-		<td colspan="2">
-			<a href = "/ranking/{{ranking.get_id()}}"> {{ranking.title}} </a>
-		</td>
-	</thead>
+<div>
+	<a href='/user/{{ranking.user.name}}'>{{ranking.user.name}}</a>
+	<p> {{ranking.created.strftime("%b %d, %Y")}} </p>
+</div>
+<div class="panel panel-default ranking-panel">
+	<div class="panel-heading">
+		<h4><a href = "/ranking/{{ranking.get_id()}}"> {{ranking.title}} </a></h4>
+	</div>
 	
-	<tbody class="ranking-body">
+	<table class="table table-hover table-bordered ranking">
 		{% for item in ranking.get_items() %}
-		<tr class="ranking-item">
-			<tr class="item">
+		<tbody class="item-body">
+			<tr class="ranking-item">
 				<td class="item-rank">{{loop.index}}</td>
 				<td class="item-name">{{item.name}}</td>
 			</tr>
-		</tr>
+		</tbody>
 		{% endfor %}
-	</tbody>
+	</table>
 	
-	<tfoot class="ranking-footer"> 
-		<td colspan="2">
-			<span class="glyphicon glyphicon-thumbs-up">0</span>
-			<span class="glyphicon glyphicon-user">1</span>
-		</td>
-	</tfoot>
-</table>
+	<div class="panel-footer"> 
+		<span class="glyphicon glyphicon-thumbs-up">{{ranking.number_of_likes}}</span>
+		<span class="glyphicon glyphicon-user">{{ranking.number_of_votes}}</span>
+	</div>
+</div>
 
 {% endmacro %}
 
 {% macro render_ranking_full(ranking, is_sorted) %}
 
-<table class="table table-hover table-bordered ranking">
-
-	<thead>
-		<a href='/user/{{ranking.user.name}}'>{{ranking.user.name}}</a>
-		<p> {{ranking.created.strftime("%b %d, %Y")}} </p>
-		<th colspan="2"> {{ranking.title}} </th>
-	</thead>
-	
-	<tbody class="ranking-body">
+<div>
+	<a href='/user/{{ranking.user.name}}'>{{ranking.user.name}}</a>
+	<p> {{ranking.created.strftime("%b %d, %Y")}} </p>
+</div>
+<div class="panel panel-default ranking-panel">
+	<div class="panel-heading">
+		<h4> {{ranking.title}} </h4>
+	</div>
+	<table class="table table-hover table-bordered ranking">
 		{% for item in ranking.get_items() %}
-		<tr class="ranking-item">
-			<td class="item-rank"> {{loop.index}} </td>
-			<td> 
-				<span class="item-name"> {{item.name}} <span>
-				<span class="glyphicon glyphicon-chevron-down open"></span> 
-			</td>
-		</tr>
-		<tr class="item-content">
-			<td colspan="2"> {{item.content}} </td>
-		</tr>
-		{% endfor %}
-	</tbody>
+		<tbody class="item-body">
+			<tr class="ranking-item"  data-item-id="{{item.get_id()}}">
+				<td class="item-rank"> {{loop.index}} </td>
+				<td> 
+					<span class="item-name"> {{item.name}} </span>
+					<span class="glyphicon glyphicon-chevron-down open"></span> 
+				</td>
+			</tr>
+			<tr class="item-content">
+				<td colspan="2"> {{item.content}} </td>
+			</tr>
+		</tbody>
+	{% endfor %}
+	</table>
 	
-	<tfoot class="ranking-footer">
-		<td colspan="2">
-		{% if is_sorted %}
-			<input id="sort-ranking" disabled class="btn btn-default btn-sm ranking-button" type="button" value="Sorted">
-		{% else %}
-			<input id="sort-ranking" class="btn btn-primary btn-sm ranking-button" type="button" value="Sort">
+	<div class="panel-footer">
+		<div class="btn-group" role="group">
+			{% if is_sorted %}
+			<button id="sort-ranking" disabled class="btn btn-default btn-sm ranking-button" type="button">
+				Sorted
+			</button>
+			{% else %}
 			<form id="post-ranking" method="post">
+				<button id="sort-ranking" class="btn btn-primary btn-sm ranking-button" type="button">
+					Sort
+				</button>
+				<button id="submit-ranking" class="btn btn-sm ranking-button post" type="submit">
+					Post
+				</button>
 				<input type="hidden" value="" name="ranking">
-				<input id="submit-ranking" class="btn btn-sm ranking-button post" type="submit" value="Post" style="display: none">
 			</form>
 		{% endif %}
-		</td>
-	</tfoot>
+		</div>
+	</div>
 </div>
-	
-</table>
 
 {% endmacro %}

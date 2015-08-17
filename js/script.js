@@ -1,57 +1,64 @@
 $(document).ready(function()
 {	
-	// Sorting
 	
+	// Sorting
 	$(function() {
-		$(".ranking-body").sortable({revert: 200, 
+		$(".ranking").sortable({revert: 200,
+			items: ".item-body",
 			update: function(event, ui) {
 	        	var i = 1
-	        	$(this).children(".ranking-item").each(function(idx, val){
+	        	$(this).children(".item-body").each(function(idx, val){
 					$(this).find(".item-rank").html(i++);
 	            });	
 			}
 			});
-		$(".ranking-body").sortable("disable");
-		$(".ranking-body").disableSelection();
+		$(".ranking").sortable("disable");
+		$(".ranking").disableSelection();
 	});
 
-	var cached_ranking_content = $(".ranking-body").html();
+	var sortableCache = $(".ranking").html();
 
 	$("#sort-ranking").click(function(){
-		if($(this).val() === "Cancel") {
-		  	$(".ranking-body").sortable("disable");
-		  	$(this).val("Sort");
-    		$(".ranking-body").html(cached_ranking_content).sortable("refresh");
+		if($(this).html() === "Cancel") {
+		  	$(".ranking").sortable("disable");
+		  	$(this).html("Sort");
+		  	$('.ranking').html(sortableCache).sortable("refresh");
 		}
 		else {
-		 	$(".ranking-body").sortable("enable");
-		  	$(this).val("Cancel");
+		 	$(".ranking").sortable("enable");
+		  	$(this).html("Cancel");
 		};
 		$("#submit-ranking").toggle("slow", function(){});
 	});
+
 	
 	// New ranking
 	var i = 1;
 	$("#add-item").on('click', function(){
-		$(".ranking-body").sortable("enable");
-		var item_name = $("#item-name").val();
-		var item_content = $("#item-content").val();
-		if(item_name != '') {
-		 	var new_item =
-		 		'<tr class="ranking-item">' +
-		 			'<td class="item-rank">' + (i++) +'</td>' +
-		 			'<td>' +
-		 				'<span class="item-name">' + item_name + '</span>' +
-		 				'<span class="glyphicon glyphicon-chevron-down open"></span>' +
-					'</td>' +
-		 		'</tr>' +
-		 		'<tr class="item-content">' +
-		 			'<td colspan="2">' + item_content + '</td>' +
-		 		'</tr>';
-			$(new_item).appendTo($(".ranking-body"));
+		var itemName = $("#item-name").val();
+		var itemContent = $("#item-content").val();
+		if(itemName != '') {
+		 	var newItem =
+		 		'<tbody class="item-body">' +
+		 			'<tr class="ranking-item">' +
+		 				'<td class="item-rank">' + (i++) +'</td>' +
+		 				'<td>' +
+		 					'<span class="item-name">' + itemName + '</span>' +
+		 					'<span class="glyphicon glyphicon-chevron-down open"></span>' +
+		 				'</td>' +
+		 			'</tr>' +
+		 			'<tr class="item-content">' +
+		 				'<td colspan="2">' + itemContent + '</td>' +
+		 			'</tr>' +
+		 		'</tbody>';
+		 	$(newItem).appendTo($(".ranking"));
 			$("#item-name").val("");
 			$("#item-content").val("");
-		}      
+		}
+		if ($(".ranking").children(".item-body").length >= 2) {
+			$(".ranking").sortable("enable");
+			$("#submit-ranking").removeAttr('disabled');
+		}
 	});
 
 	$("#post-new-ranking").on('submit', function(event) {
@@ -67,16 +74,13 @@ $(document).ready(function()
 			return false; 
 		}
 		
-		$(".ranking-body").children(".ranking-item").each(function(idx, val){
+		$(".ranking").children(".item-body").each(function(idx, val){
 			ranking.item_names.push($(this).find(".item-name").text());
-        });
-		
-		$(".ranking-body").children(".item-content").each(function(idx, val){
-			ranking.item_contents.push($(this).text());
+			ranking.item_contents.push($(this).find(".item-content").text());
         });
 
 		if(ranking.item_names.length < 2) { 
-			alert('You should at least two items!' + ranking.item_names.length ); 
+			alert('You should at least two items! Got' + ranking.item_names.length ); 
 			return false; 
 		}
 		$("input[name='ranking']").val(JSON.stringify(ranking));
@@ -87,10 +91,10 @@ $(document).ready(function()
 	
 	$("#post-ranking").submit(function(event) {
 		var ranking = {
-		item_ids: [],
+			itemIds: [],
 		};
-		$(".ranking-body").children().each(function(idx, val){
-			ranking.item_ids.push($(this).data("item-id"));
+		$(".ranking").children(".ranking-item").each(function(idx, val){
+			ranking.itemIds.push($(this).data("item-id"));
         });	
 		$("input[name='ranking']").val(JSON.stringify(ranking));
 		$("#submit-ranking").attr("disabled","disabled");
@@ -98,7 +102,7 @@ $(document).ready(function()
 
 	//	Ranking displaying content
 	
-	$(".ranking-body").on('click', ".open", 
+	$(".ranking-panel").on('click', ".open", 
 		function() {
 			$(this).closest(".ranking-item").next().slideToggle();
 			if($(this).val()==="show") {
@@ -111,12 +115,12 @@ $(document).ready(function()
 			}
 	});
 
-	$(".ranking-body").on('mouseenter', ".ranking-item",
+	$(".ranking-panel").on('mouseenter', ".ranking-item",
 		function() {
 		$(this).find(".open").show();
 	});
 
-	$(".ranking-body").on('mouseleave', ".ranking-item",
+	$(".ranking-panel").on('mouseleave', ".ranking-item",
 	 	function() { 
 	 	$(this).find(".open").hide();
 	});

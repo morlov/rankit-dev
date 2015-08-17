@@ -1,26 +1,13 @@
 {% extends "ranking_page.html" %}
 
 {% block ranking %}
-<div id="new-ranking">
-
-	<div class="panel-heading">
-	</div>
 	
-	<div class="panel-body">
-
+<div class="panel panel-default ranking-panel">
+	<div class="panel-heading">
+		<h4><input required id="ranking-title-input" type="text" placeholder="Enter ranking title..."></h4>
+	</div>
 	<table class="table table-hover table-bordered ranking">
-		
-		<thead>
-			<td colspan="2">
-				<input required id="ranking-title-input" type="text" placeholder="Enter ranking title...">
-			</td>
-		</thead>
-
-		<tbody class="ranking-body">
-			
-		</tbody>
-
-		<tfoot class="ranking-footer">
+		<tfoot>
 			<tr>
 				<td class="new-ranking-item" colspan="2">
 					<input required class="item-name-input" type="text" placeholder="Enter item name and press add..." id="item-name">
@@ -31,18 +18,21 @@
 					<textarea class="item-content-input" type="text" placeholder="Type here..." id="item-content"></textarea>
 				</td>
 			</tr>
-			<tr>
-				<td colspan="2">
-					<form id="post-new-ranking" method="post">
-						<input type="hidden" value="" name="ranking">
-						<input id="submit-ranking" class="btn btn-default btn-sm  ranking-button post" type="submit" value="Post">
-					</form>
-					<input id="add-item" class="btn btn-default btn-sm ranking-button" type="button" value="Add">	
-				</td>
-			</tr>	
 		</tfoot>
-
 	</table>
+	<div class="panel-footer">
+		<div class="btn-group" role="group">
+			<form id="post-new-ranking" method="post">
+				<input type="hidden" value="" name="ranking">
+				<button id="submit-ranking" disabled class="btn btn-default btn-sm ranking-button" type="submit">
+					Submit
+				</button>
+				<button id="add-item" class="btn btn-default btn-sm ranking-button" type="button">
+					Add
+				</button>
+			</form>	
+		</div>	
 	</div>
 </div>
+	
 {% endblock ranking %}

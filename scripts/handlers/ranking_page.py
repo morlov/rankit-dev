@@ -30,6 +30,6 @@ class RankingPage(handler.Handler):
         item_ids = json.loads(self.request.get('ranking'))
         print item_ids
         #ranks = ranking.get_rank_by_items(item_ids)
+        #print ranks
         #ranking.update(ranks, user)
-        self.response.out.write(json.dumps(ranking.ranks))
         self.redirect('/ranking/'+str(ranking_id))

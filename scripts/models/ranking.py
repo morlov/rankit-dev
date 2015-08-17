@@ -18,10 +18,12 @@ class Ranking(Entity):
     created = db.DateTimeProperty(auto_now_add=True)
     updated = db.DateTimeProperty
     ranks = db.ListProperty(int)
+    number_of_votes = db.IntegerProperty()
+    number_of_likes = db.IntegerProperty()
     
     @staticmethod
     def create(user, form):     
-        ranking = Ranking(user=user, title=form.title)
+        ranking = Ranking(user=user, title=form.title, number_of_votes=1, number_of_likes=0)
         ranking.put()
         ranking.update(form.ranks, user)
         for (name, content) in zip(form.item_names, form.item_contents):
