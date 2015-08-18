@@ -23,17 +23,19 @@ class Ranking(Entity):
     
     @staticmethod
     def create(user, form):     
-        ranking = Ranking(user=user, title=form.title, number_of_votes=1, number_of_likes=0)
+        ranking = Ranking(user=user, title=form.title, number_of_votes=0, number_of_likes=0)
         ranking.put()
-        ranking.update(form.ranks, user)
+        vote = Vote(ranks=form.ranks, user=user, parent=ranking)
+        vote.put()
+        ranking.update(vote)
         for (name, content) in zip(form.item_names, form.item_contents):
             Item(parent=ranking, user=user, name=name, content=content).put()
         return ranking
     
-    def update(self, ranks, user):
-        Vote(parent=self, user=user, ranks=ranks).put()
+    def update(self, vote):
         self.ranks = Rules.borda(self.get_ranks())
         self.updated = datetime.now()
+        self.number_of_votes += 1
         self.put()
        
     def get_ranks(self): 

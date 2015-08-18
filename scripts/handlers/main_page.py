@@ -14,4 +14,4 @@ class MainPage(handler.Handler):
     def render_main_page(self):
         user = self.get_current_user()
         rankings = Ranking.all().order('-created').fetch(50)
-        self.render("main.html", user=user, rankings=rankings)
+        self.render("main.html", current_user=user, user=user, rankings=rankings)

@@ -15,7 +15,7 @@ class Test(unittest.TestCase):
 
 
     def testRankingForm(self):
-        ranking_json = '{"title": "ranking", "item_names": ["item1", "item2", "item3"], "item_contents": ["content1", "content2", "content3"], "ranks": [1, 2, 3]}'
+        ranking_json = '{"title": "ranking", "itemNames": ["item1", "item2", "item3"], "itemContents": ["content1", "content2", "content3"], "ranks": [1, 2, 3]}'
         ranking_form = RankingForm(ranking_json) 
         self.assertEqual(ranking_form.title,"ranking")
         self.assertListEqual(ranking_form.item_names, ["item1", "item2", "item3"])

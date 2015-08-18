@@ -9,11 +9,11 @@
 	</div>
 	
 	<table class="table table-hover table-bordered ranking">
-		{% for item in ranking.get_items() %}
+		{% for rank in ranking.ranks %}
 		<tbody class="item-body">
 			<tr class="ranking-item">
 				<td class="item-rank">{{loop.index}}</td>
-				<td class="item-name">{{item.name}}</td>
+				<td class="item-name">{{ranking.get_items()[rank].name}}</td>
 			</tr>
 		</tbody>
 		{% endfor %}
@@ -38,17 +38,17 @@
 		<h4> {{ranking.title}} </h4>
 	</div>
 	<table class="table table-hover table-bordered ranking">
-		{% for item in ranking.get_items() %}
-		<tbody class="item-body">
-			<tr class="ranking-item"  data-item-id="{{item.get_id()}}">
+		{% for rank in ranking.ranks %}
+		<tbody class="item-body" data-item-rank="{{rank}}">
+			<tr class="ranking-item">
 				<td class="item-rank"> {{loop.index}} </td>
 				<td> 
-					<span class="item-name"> {{item.name}} </span>
+					<span class="item-name"> {{ranking.get_items()[rank].name}} </span>
 					<span class="glyphicon glyphicon-chevron-down open"></span> 
 				</td>
 			</tr>
 			<tr class="item-content">
-				<td colspan="2"> {{item.content}} </td>
+				<td colspan="2"> {{ranking.get_items()[rank].content}} </td>
 			</tr>
 		</tbody>
 	{% endfor %}

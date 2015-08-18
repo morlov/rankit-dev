@@ -17,4 +17,5 @@ class UserPage(handler.Handler):
         
 
     def render_user_page(self, user):
-        self.render("user.html", user=user, rankings=user.rankings)
+        current_user = self.get_current_user()
+        self.render("user.html", current_user=current_user, user=user, rankings=user.rankings)

@@ -2,6 +2,7 @@ from scripts.handlers import handler
 import json
 
 from scripts.models.ranking import Ranking
+from scripts.models.ranking import Vote
 
 class RankingPage(handler.Handler):
 
@@ -14,7 +15,7 @@ class RankingPage(handler.Handler):
         user = self.get_current_user()
         if user:
             is_sorted = ranking.is_sorted_by(user)
-            self.render("ranking.html", user=user, ranking=ranking, is_sorted=is_sorted)
+            self.render("ranking.html", user=ranking.user, ranking=ranking, is_sorted=is_sorted, current_user=user)
         else:
             self.redirect("/signup")
       
@@ -27,9 +28,8 @@ class RankingPage(handler.Handler):
             self.response.out.write('You have already submitted this ranking!')
             return
 
-        item_ids = json.loads(self.request.get('ranking'))
-        print item_ids
-        #ranks = ranking.get_rank_by_items(item_ids)
-        #print ranks
-        #ranking.update(ranks, user)
+        ranking_json = json.loads(self.request.get('ranking'))
+        vote = Vote(user=user, parent=ranking, ranks=ranking_json["ranks"])
+        vote.put()
+        ranking.update(vote)
         self.redirect('/ranking/'+str(ranking_id))

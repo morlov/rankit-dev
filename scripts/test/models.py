@@ -4,6 +4,7 @@ from google.appengine.ext import testbed
 
 from scripts.models.user import User
 from scripts.models.item import Item
+from scripts.models.ranking import Vote
 from scripts.models.ranking import Ranking
 
 from scripts.forms.ranking_form import RankingForm
@@ -78,8 +79,13 @@ class Test(unittest.TestCase):
         ranking_form = RankingForm(ranking_json) 
         ranking = Ranking.create(user1, ranking_form)
         
-        ranking.update([2,1,0], user2)
-        ranking.update([2,1,0], user3)
+        vote2 = Vote(parent=ranking, user=user2, ranks=[2,1,0])
+        vote2.put()
+        ranking.update(vote2)
+        
+        vote3 = Vote(parent=ranking, user=user3, ranks=[2,1,0])
+        vote3.put()
+        ranking.update(vote3)
         
         self.assertListEqual(ranking.get_ranks(), [[0, 1, 2], [2, 1, 0], [2, 1, 0]])
         self.assertListEqual(ranking.ranks, [2, 1, 0])

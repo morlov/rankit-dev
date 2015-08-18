@@ -65,8 +65,8 @@ $(document).ready(function()
 		
 		var ranking = {
 			title: $("#ranking-title-input").val(),
-			item_names: [],
-			item_contents: []
+			itemNames: [],
+			itemContents: []
 		};
 
 		if(ranking.title === '') { 
@@ -75,11 +75,11 @@ $(document).ready(function()
 		}
 		
 		$(".ranking").children(".item-body").each(function(idx, val){
-			ranking.item_names.push($(this).find(".item-name").text());
-			ranking.item_contents.push($(this).find(".item-content").text());
+			ranking.itemNames.push($(this).find(".item-name").text());
+			ranking.itemContents.push($(this).find(".item-content").text());
         });
 
-		if(ranking.item_names.length < 2) { 
+		if(ranking.itemNames.length < 2) { 
 			alert('You should at least two items! Got' + ranking.item_names.length ); 
 			return false; 
 		}
@@ -91,10 +91,10 @@ $(document).ready(function()
 	
 	$("#post-ranking").submit(function(event) {
 		var ranking = {
-			itemIds: [],
+			ranks: [],
 		};
-		$(".ranking").children(".ranking-item").each(function(idx, val){
-			ranking.itemIds.push($(this).data("item-id"));
+		$(".ranking").children(".item-body").each(function(idx, val){
+			ranking.ranks.push($(this).data("item-rank"));
         });	
 		$("input[name='ranking']").val(JSON.stringify(ranking));
 		$("#submit-ranking").attr("disabled","disabled");
