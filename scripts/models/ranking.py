@@ -20,6 +20,7 @@ class Ranking(Entity):
     ranks = db.ListProperty(int)
     number_of_votes = db.IntegerProperty()
     number_of_likes = db.IntegerProperty()
+    likes = db.ListProperty(db.Key)
     
     @staticmethod
     def create(user, form):     
@@ -32,10 +33,21 @@ class Ranking(Entity):
             Item(parent=ranking, user=user, name=name, content=content).put()
         return ranking
     
+    @db.transactional
     def update(self, vote):
         self.ranks = Rules.borda(self.get_ranks())
         self.updated = datetime.now()
         self.number_of_votes += 1
+        self.put()
+    
+    @db.transactional   
+    def like(self, user):
+        if user.key() in self.likes:
+            self.likes.remove(user.key())
+            self.number_of_likes -= 1
+        else:
+            self.likes.append(user.key())
+            self.number_of_likes += 1
         self.put()
        
     def get_ranks(self): 
@@ -49,3 +61,4 @@ class Ranking(Entity):
     
     def is_sorted_by(self, user):
         return user.key() in [user.key() for user in self.get_users()]
+    

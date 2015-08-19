@@ -13,4 +13,4 @@ class Rules(object):
         for rank in ranks:
             for (i, r) in enumerate(rank):
                 scores[i] += n - r
-        return sorted(range(len(scores)),key=lambda x:n-scores[x])
+        return sorted(range(len(scores)), key=lambda x:n-scores[x])

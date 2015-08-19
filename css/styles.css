@@ -7,7 +7,13 @@
 /* ranking */
 
 .ranking {
-} 
+	table-layout:fixed;
+}
+
+.content {
+    word-wrap:break-word;
+    white-space:pre;
+}
 
 .ranking-panel:hover {
 	box-shadow: 0 0 3px 0px rgba(0,0,0,0.5);
@@ -41,6 +47,11 @@
 
 .item-content {
 	display: none;
+}
+
+/* disable hover of content  */
+.ranking > .item-body > .item-content:hover {
+	background-color: inherit;
 }
 
 /* New ranking */

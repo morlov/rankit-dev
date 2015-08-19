@@ -48,7 +48,7 @@ $(document).ready(function()
 		 				'</td>' +
 		 			'</tr>' +
 		 			'<tr class="item-content">' +
-		 				'<td colspan="2">' + itemContent + '</td>' +
+		 				'<td colspan="2" class="content">' + itemContent + '</td>' +
 		 			'</tr>' +
 		 		'</tbody>';
 		 	$(newItem).appendTo($(".ranking"));
@@ -124,5 +124,26 @@ $(document).ready(function()
 	 	function() { 
 	 	$(this).find(".open").hide();
 	});
-
+	
+	// Like
+	$(".ranking-panel").on('click', ".like",
+		function() {
+			var rankingId = $(this).closest(".ranking-panel").data("ranking-id");
+			var userName = $("#user_name").html(); 
+			var $like = $(this)
+			$.ajax({url: "/like/" + userName + "/" + rankingId, 
+				type: 'POST',
+				success: function(result) {
+					$like.html(result);
+				}
+			});
+		});
+	
+	// Scrolled to bottom
+	$(window).scroll(function() {
+		if($(window).scrollTop() + window.innerHeight == $(document).height()) {
+			alert("bottom!");
+		}
+	});
+	
 });

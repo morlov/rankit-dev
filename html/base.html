@@ -39,7 +39,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li>
 					<a href="/user/{{current_user.name}}">
-						<span>{{current_user.name}}</span>
+						<span id="user_name">{{current_user.name}}</span>
 					</a>
 				</li>
 				
@@ -49,7 +49,7 @@
 					</a>
 					<ul class="dropdown-menu" role="menu">
       					<li><a href="/new">New ranking</a></li>
-      					<li><a href="#">Edit profile</a></li>
+      					<li><a href="/edit_profile">Edit profile</a></li>
       					<li class="divider"></li>
       					<li><a href="/signout">Signout</a></li>
     				</ul>

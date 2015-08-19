@@ -14,6 +14,15 @@
 
 {% block content %}
 	<div class="col-md-4 col-md-offset-4">
+		
+		{% if error_login %}
+		<div class="alert alert-danger">
+          <a class="panel-close close" data-dismiss="alert">×</a> 
+          <i class="fa fa-coffee"></i>
+          {{error_login}}
+        </div>
+        {% endif %}
+	
     	<div class="panel panel-default">
   			<div class="panel-heading">
   				<h3 class="panel-title">
@@ -38,7 +47,6 @@
     					<label for="exampleInputConfirm">Verify password</label>
     					<input type="password" class="form-control input-sm" name="verify" value="{{verify}}" placeholder="Verify password">
   					</div>
-  					<p class="text-danger">{{error_login}}</p>
   					<button type="submit" class="btn btn-sm btn-default">Sign up</button>
 				</form>
   			</div>
