@@ -21,6 +21,7 @@ class Ranking(Entity):
     number_of_votes = db.IntegerProperty()
     number_of_likes = db.IntegerProperty()
     likes = db.ListProperty(db.Key)
+    description = db.TextProperty()
     
     @staticmethod
     def create(user, form):     
