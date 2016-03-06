@@ -1,5 +1,3 @@
-
-
 class Rules(object):
 
     @staticmethod

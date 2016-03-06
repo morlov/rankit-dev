@@ -9,3 +9,4 @@ class Item(Entity):
     name = db.StringProperty(required = False)
     content = db.TextProperty(required = False)
     created = db.DateTimeProperty(auto_now_add = True)
+    score = db.IntegerProperty()

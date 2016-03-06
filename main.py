@@ -7,6 +7,7 @@ import scripts.handlers.ranking_page
 import scripts.handlers.main_page
 import scripts.handlers.edit_profile
 import scripts.handlers.like
+import scripts.api.v1.rank_block
 
 app = webapp2.WSGIApplication([
     ('/', scripts.handlers.main_page.MainPage),
@@ -17,7 +18,10 @@ app = webapp2.WSGIApplication([
     ('/like/([a-zA-Z0-9_-]+)/([0-9]+)', scripts.handlers.like.LikeHandler),
     ('/signup', scripts.handlers.login.Signup),
     ('/signin', scripts.handlers.login.Signin),
-    ('/signout', scripts.handlers.login.Signout)
+    ('/signout', scripts.handlers.login.Signout),
+    # API methods
+    ('/api/v1/rankblock/latest', scripts.api.v1.rank_block.RankBlock),
+    
     ], debug=True)
 
 
