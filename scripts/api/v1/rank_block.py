@@ -44,7 +44,7 @@ class RankBlock(handler.Handler):
             response_rank = {}
             response_rank["type"] = type
             response_rank["user"] = ranking.user.name
-            response_rank["created"] = ranking.created
+            response_rank["created"] = ranking.created.strftime("%Y-%m-%d %H:%M:%S")
             response_rank["id"] = ranking.get_id()
             response_rank["title"] = ranking.title
             response_rank["description"] = ranking.description
